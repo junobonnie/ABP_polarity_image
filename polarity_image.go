@@ -43,11 +43,12 @@ func draw_image(width *int, height *int, k int, inputPath string, outputPath str
 func main() {
 	width := flag.Int("width", 1000, "width of the image")
 	height := flag.Int("height", 1000, "height of the image")
+	folder := flag.String("folder", "001", "folder name")
 	timecut := flag.Int("timecut", 1000, "time cut")
 	flag.Parse()
 
-	inputPath := fmt.Sprintf("./snapshots/%dx%d/001/", *width, *height)
-	outputPath := fmt.Sprintf("./images/results/%dx%d/", *width, *height)
+	inputPath := fmt.Sprintf("./snapshots/%dx%d/%s/", *width, *height, *folder)
+	outputPath := fmt.Sprintf("./images/results/%dx%d/%s/", *width, *height, *folder)
 
 	var time []int
 	for i := 0; i < 1000; i += 10 {
@@ -78,7 +79,7 @@ func main() {
 			defer wg.Done()
 			draw_image(width, height, 20*t, inputPath, outputPath)
 		}(t)
-		if (i+1)%100 == 0 {
+		if (i+1)%50 == 0 {
 			wg.Wait()
 		}
 	}
